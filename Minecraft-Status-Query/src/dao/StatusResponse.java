@@ -1,18 +1,16 @@
 package dao;
 
-
 public class StatusResponse {
-	
-	private boolean online = false;
-    private String description;
-    private Player players;
-    private Version version;
-    private String favicon;
-    private int time;
 
-    
-    
-    public boolean isOnline() {
+	private boolean online = false;
+	private String description;
+	private Player players;
+	private Version version;
+	private String favicon;
+	private int time;
+	private int size;
+
+	public boolean isOnline() {
 		return online;
 	}
 
@@ -21,28 +19,36 @@ public class StatusResponse {
 	}
 
 	public String getDescription() {
-        return description;
-    }
+		return description;
+	}
 
-    public Player getPlayers() {
-        return players;
-    }
+	public Player getPlayers() {
+		return players;
+	}
 
-    public Version getVersion() {
-        return version;
-    }
+	public Version getVersion() {
+		return version;
+	}
 
-    public String getFavicon() {
-        return favicon;
-    }
+	public String getFavicon() {
+		return favicon;
+	}
 
-    public int getTime() {
-        return time;
-    }      
+	public int getTime() {
+		return time;
+	}
 
-    public void setTime(int time) {
-        this.time = time;
-    }
+	public void setTime(int time) {
+		this.time = time;
+	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
 
 	@Override
 	public String toString() {
@@ -50,5 +56,5 @@ public class StatusResponse {
 				+ players + ", version=" + version + ", favicon=" + favicon
 				+ ", time=" + time + "]";
 	}
-    
+
 }
