@@ -4,7 +4,7 @@ public class StatusResponse {
 
 	private boolean online = false;
 	private String description;
-	private Player players;
+	private Players players;
 	private Version version;
 	private String favicon;
 	private int time;
@@ -22,7 +22,7 @@ public class StatusResponse {
 		return description;
 	}
 
-	public Player getPlayers() {
+	public Players getPlayers() {
 		return players;
 	}
 

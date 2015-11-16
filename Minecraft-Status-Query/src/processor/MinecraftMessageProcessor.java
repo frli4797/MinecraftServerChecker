@@ -32,6 +32,7 @@ public class MinecraftMessageProcessor implements MessageProcessor {
 
 	@Override
 	public void sendMessage(Message mess) throws IOException {
+		mess.pack();
 		dataOutputStream.write(mess.size());
 		dataOutputStream.write(mess.getData());
 	}

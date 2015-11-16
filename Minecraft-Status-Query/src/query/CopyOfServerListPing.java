@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import message.HandshakeMessage;
-import message.Message;
 import message.PingMessage;
 import message.PingResponseMessage;
 import message.StatusRequestMessage;
@@ -47,9 +46,23 @@ public class CopyOfServerListPing {
 		StatusResponse response = new StatusResponse();
 		try {
 			processor.initialize();
-			handshake();
+			processor.sendMessage(new HandshakeMessage(host));
 
-			response = readData();
+			// Write Request
+			processor.sendMessage(new StatusRequestMessage());
+
+			String json = (String) processor
+					.recieveMessage(StatusResponseMessage.class);
+
+			long now = System.currentTimeMillis();
+			processor.sendMessage(new PingMessage(now));
+
+			long pingtime = (long) processor
+					.recieveMessage(PingResponseMessage.class);
+
+			response = gson.fromJson(json, StatusResponse.class);
+			response.setTime((int) (now - pingtime));
+			response.setOnline(true);
 
 		} catch (Exception e) {
 			throw new MinecraftServerException("Could not get server status.",
@@ -63,17 +76,13 @@ public class CopyOfServerListPing {
 
 	private StatusResponse readData() throws IOException {
 		// Write Request
-		Message m = new StatusRequestMessage();
-		m.pack();
-		processor.sendMessage(m);
+		processor.sendMessage(new StatusRequestMessage());
 
 		String json = (String) processor
 				.recieveMessage(StatusResponseMessage.class);
 
 		long now = System.currentTimeMillis();
-		Message pingMessage = new PingMessage(now);
-		pingMessage.pack();
-		processor.sendMessage(pingMessage);
+		processor.sendMessage(new PingMessage(now));
 
 		long pingtime = (long) processor
 				.recieveMessage(PingResponseMessage.class);
@@ -85,10 +94,7 @@ public class CopyOfServerListPing {
 	}
 
 	private void handshake() throws IOException {
-
-		Message m = new HandshakeMessage(host);
-		m.pack();
-		processor.sendMessage(m);
+		processor.sendMessage(new HandshakeMessage(host));
 	}
 
 	public static void main(String[] args) {
